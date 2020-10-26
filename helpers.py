@@ -16,9 +16,8 @@ def allowed_file(filename, key):
 
 def validate_files(files):
     keys = list(files.keys())
-    # if len(keys) != 5:
-    #     raise BadRequest(description='number of expected files is 5')
-    for key in keys:
+    if len(keys) != 5:
+        raise BadRequest(description='number of expected files is 5')
         if not allowed_file(files[key].filename, key):
             raise BadRequest('unallowed file for {}. File extension must be .csv or key value must be one of the following "competitions", "matches", "priorities", "schedule", "preferences"'.format(key))
 
