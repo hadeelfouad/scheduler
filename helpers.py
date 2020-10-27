@@ -18,6 +18,7 @@ def validate_files(files):
     keys = list(files.keys())
     if len(keys) != 5:
         raise BadRequest(description='number of expected files is 5')
+    for key in keys:
         if not allowed_file(files[key].filename, key):
             raise BadRequest('unallowed file for {}. File extension must be .csv or key value must be one of the following "competitions", "matches", "priorities", "schedule", "preferences"'.format(key))
 
@@ -29,6 +30,7 @@ def read_files(files):
     schedule = pd.read_csv(io.StringIO(files['schedule'].stream.read().decode("UTF8"), newline=None))
     return competitions, matches, priorities, preferences, schedule
 
+# find the closest competition name for a match if it does not exist competition file. Was the case for matches under
 def validate_matches_competition(matches, competitions):
     unknown_competitions = []
     competitions = competitions.Competition.unique()
